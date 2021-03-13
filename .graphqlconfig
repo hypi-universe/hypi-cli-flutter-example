@@ -1,0 +1,12 @@
+{
+  "name": "HypiSchema",
+  "schemaPath": "schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default": {
+        "url": "https://api.hypi.app/graphql",
+        "introspect": true
+      }
+    }
+  }
+}
