@@ -7,72 +7,28 @@ import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
 part 'graphql_api.graphql.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class ProductsData$Query$Find$Edges$Node$Product$Hypi
-    extends ProductsData$Query$Find$Edges$Node$Product with EquatableMixin {
-  ProductsData$Query$Find$Edges$Node$Product$Hypi();
-
-  factory ProductsData$Query$Find$Edges$Node$Product$Hypi.fromJson(
-          Map<String, dynamic> json) =>
-      _$ProductsData$Query$Find$Edges$Node$Product$HypiFromJson(json);
-
-  String id;
-
-  @override
-  List<Object> get props => [id];
-  Map<String, dynamic> toJson() =>
-      _$ProductsData$Query$Find$Edges$Node$Product$HypiToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class ProductsData$Query$Find$Edges$Node$Product
-    extends ProductsData$Query$Find$Edges$Node with EquatableMixin {
-  ProductsData$Query$Find$Edges$Node$Product();
-
-  factory ProductsData$Query$Find$Edges$Node$Product.fromJson(
-          Map<String, dynamic> json) =>
-      _$ProductsData$Query$Find$Edges$Node$ProductFromJson(json);
-
-  ProductsData$Query$Find$Edges$Node$Product$Hypi hypi;
-
+mixin ProductMixin {
+  ProductMixin$Hypi hypi;
   String title;
-
   String description;
-
-  @override
-  List<Object> get props => [hypi, title, description];
-  Map<String, dynamic> toJson() =>
-      _$ProductsData$Query$Find$Edges$Node$ProductToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class ProductsData$Query$Find$Edges$Node with EquatableMixin {
+class ProductsData$Query$Find$Edges$Node with EquatableMixin, ProductMixin {
   ProductsData$Query$Find$Edges$Node();
 
   factory ProductsData$Query$Find$Edges$Node.fromJson(
-      Map<String, dynamic> json) {
-    switch (json['__typename'].toString()) {
-      case r'Product':
-        return ProductsData$Query$Find$Edges$Node$Product.fromJson(json);
-      default:
-    }
-    return _$ProductsData$Query$Find$Edges$NodeFromJson(json);
-  }
+          Map<String, dynamic> json) =>
+      _$ProductsData$Query$Find$Edges$NodeFromJson(json);
 
   @override
   @JsonKey(name: '__typename')
   String typeName;
 
   @override
-  List<Object> get props => [typeName];
-  Map<String, dynamic> toJson() {
-    switch (typeName) {
-      case r'Product':
-        return (this as ProductsData$Query$Find$Edges$Node$Product).toJson();
-      default:
-    }
-    return _$ProductsData$Query$Find$Edges$NodeToJson(this);
-  }
+  List<Object> get props => [hypi, title, description, typeName];
+  Map<String, dynamic> toJson() =>
+      _$ProductsData$Query$Find$Edges$NodeToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -115,6 +71,20 @@ class ProductsData$Query with EquatableMixin {
   @override
   List<Object> get props => [find];
   Map<String, dynamic> toJson() => _$ProductsData$QueryToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class ProductMixin$Hypi with EquatableMixin {
+  ProductMixin$Hypi();
+
+  factory ProductMixin$Hypi.fromJson(Map<String, dynamic> json) =>
+      _$ProductMixin$HypiFromJson(json);
+
+  String id;
+
+  @override
+  List<Object> get props => [id];
+  Map<String, dynamic> toJson() => _$ProductMixin$HypiToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -175,43 +145,45 @@ class ProductsDataQuery
                           arguments: [],
                           directives: [],
                           selectionSet: SelectionSetNode(selections: [
-                            InlineFragmentNode(
-                                typeCondition: TypeConditionNode(
-                                    on: NamedTypeNode(
-                                        name: NameNode(value: 'Product'),
-                                        isNonNull: false)),
-                                directives: [],
-                                selectionSet: SelectionSetNode(selections: [
-                                  FieldNode(
-                                      name: NameNode(value: 'hypi'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet:
-                                          SelectionSetNode(selections: [
-                                        FieldNode(
-                                            name: NameNode(value: 'id'),
-                                            alias: null,
-                                            arguments: [],
-                                            directives: [],
-                                            selectionSet: null)
-                                      ])),
-                                  FieldNode(
-                                      name: NameNode(value: 'title'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null),
-                                  FieldNode(
-                                      name: NameNode(value: 'description'),
-                                      alias: null,
-                                      arguments: [],
-                                      directives: [],
-                                      selectionSet: null)
-                                ]))
+                            FragmentSpreadNode(
+                                name: NameNode(value: 'product'),
+                                directives: [])
                           ]))
                     ]))
               ]))
+        ])),
+    FragmentDefinitionNode(
+        name: NameNode(value: 'product'),
+        typeCondition: TypeConditionNode(
+            on: NamedTypeNode(
+                name: NameNode(value: 'Product'), isNonNull: false)),
+        directives: [],
+        selectionSet: SelectionSetNode(selections: [
+          FieldNode(
+              name: NameNode(value: 'hypi'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: SelectionSetNode(selections: [
+                FieldNode(
+                    name: NameNode(value: 'id'),
+                    alias: null,
+                    arguments: [],
+                    directives: [],
+                    selectionSet: null)
+              ])),
+          FieldNode(
+              name: NameNode(value: 'title'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null),
+          FieldNode(
+              name: NameNode(value: 'description'),
+              alias: null,
+              arguments: [],
+              directives: [],
+              selectionSet: null)
         ]))
   ]);
 

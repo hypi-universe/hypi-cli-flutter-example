@@ -6,61 +6,23 @@ part of 'graphql_api.graphql.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ProductsData$Query$Find$Edges$Node$Product$Hypi
-    _$ProductsData$Query$Find$Edges$Node$Product$HypiFromJson(
-        Map<String, dynamic> json) {
-  return ProductsData$Query$Find$Edges$Node$Product$Hypi()
-    ..typeName = json['__typename'] as String
-    ..hypi = json['hypi'] == null
-        ? null
-        : ProductsData$Query$Find$Edges$Node$Product$Hypi.fromJson(
-            json['hypi'] as Map<String, dynamic>)
-    ..title = json['title'] as String
-    ..description = json['description'] as String
-    ..id = json['id'] as String;
-}
-
-Map<String, dynamic> _$ProductsData$Query$Find$Edges$Node$Product$HypiToJson(
-        ProductsData$Query$Find$Edges$Node$Product$Hypi instance) =>
-    <String, dynamic>{
-      '__typename': instance.typeName,
-      'hypi': instance.hypi?.toJson(),
-      'title': instance.title,
-      'description': instance.description,
-      'id': instance.id,
-    };
-
-ProductsData$Query$Find$Edges$Node$Product
-    _$ProductsData$Query$Find$Edges$Node$ProductFromJson(
-        Map<String, dynamic> json) {
-  return ProductsData$Query$Find$Edges$Node$Product()
-    ..typeName = json['__typename'] as String
-    ..hypi = json['hypi'] == null
-        ? null
-        : ProductsData$Query$Find$Edges$Node$Product$Hypi.fromJson(
-            json['hypi'] as Map<String, dynamic>)
-    ..title = json['title'] as String
-    ..description = json['description'] as String;
-}
-
-Map<String, dynamic> _$ProductsData$Query$Find$Edges$Node$ProductToJson(
-        ProductsData$Query$Find$Edges$Node$Product instance) =>
-    <String, dynamic>{
-      '__typename': instance.typeName,
-      'hypi': instance.hypi?.toJson(),
-      'title': instance.title,
-      'description': instance.description,
-    };
-
 ProductsData$Query$Find$Edges$Node _$ProductsData$Query$Find$Edges$NodeFromJson(
     Map<String, dynamic> json) {
   return ProductsData$Query$Find$Edges$Node()
+    ..hypi = json['hypi'] == null
+        ? null
+        : ProductMixin$Hypi.fromJson(json['hypi'] as Map<String, dynamic>)
+    ..title = json['title'] as String
+    ..description = json['description'] as String
     ..typeName = json['__typename'] as String;
 }
 
 Map<String, dynamic> _$ProductsData$Query$Find$Edges$NodeToJson(
         ProductsData$Query$Find$Edges$Node instance) =>
     <String, dynamic>{
+      'hypi': instance.hypi?.toJson(),
+      'title': instance.title,
+      'description': instance.description,
       '__typename': instance.typeName,
     };
 
@@ -106,6 +68,15 @@ ProductsData$Query _$ProductsData$QueryFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$ProductsData$QueryToJson(ProductsData$Query instance) =>
     <String, dynamic>{
       'find': instance.find?.toJson(),
+    };
+
+ProductMixin$Hypi _$ProductMixin$HypiFromJson(Map<String, dynamic> json) {
+  return ProductMixin$Hypi()..id = json['id'] as String;
+}
+
+Map<String, dynamic> _$ProductMixin$HypiToJson(ProductMixin$Hypi instance) =>
+    <String, dynamic>{
+      'id': instance.id,
     };
 
 ProductsDataArguments _$ProductsDataArgumentsFromJson(
