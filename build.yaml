@@ -3,12 +3,13 @@ targets:
     sources:
       - lib/**
       - graphql/**
+      - .hypi/**
       - schema.graphql
     builders:
       artemis:
         options:
           schema_mapping:
-            - schema: schema.graphql
+            - schema: .hypi/full-schema.graphql
               queries_glob: graphql/*.graphql
               output: lib/models/graphql/graphql_api.dart
               naming_scheme: pathedWithFields
