@@ -1,6 +1,9 @@
 """This directive allows results to be deferred during execution"""
 directive @defer on FIELD
 
+"""check if the date is in the future"""
+directive @future on FIELD_DEFINITION
+
 """
 Added to any field which should be store encrypted and not allowed to be returned to clients via GraphQL
 PKCS5 is decrypted and can be passed to other functions but will not be returned through the generated APIs.
@@ -9,22 +12,58 @@ encrypted hash but you cannot get or compare to the original directly.
 """
 directive @secret(hash: HashAlgorithm) on FIELD_DEFINITION
 
+directive @indices(sets: [[String]]) on OBJECT | INTERFACE
+
+directive @computedCount(field: String, distinct: Boolean = false) on FIELD_DEFINITION
+
+"""check if the value is not null"""
+directive @notNull on FIELD_DEFINITION
+
+"""
+check if the field's value matches the regular expression given a match flag (see https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html  )
+if allMustMatch is true (default) then all regex must pass
+"""
+directive @pattern(regex: [String!]!, allMustMatch: Boolean = true) on FIELD_DEFINITION
+
+"""
+Indicates that the field cannot be changed after it is initially created
+"""
+directive @immutable on FIELD_DEFINITION
+
+"""check if the date is in the past"""
+directive @past on FIELD_DEFINITION
+
+""" directive which allows any GraphQL definition's field to be provided by a Hypi Arc Tan function.
+"""
+directive @tan(type: TanType!, name: String, handler: String, inline: String, saveAs: String) on FIELD_DEFINITION
+
+"""
+Tells Hypi not to generate a table internally for the type this is attached to.
+"""
+directive @notable on OBJECT
+
+"""
+Used by core to mark a type as being one of the generated TAgg types. Not for general use!
+"""
+directive @isagg(type: String!) on OBJECT | ENUM
+
+"""Add to any field which should not have a relay API generated"""
+directive @norelay on FIELD | FIELD_DEFINITION
+
+"""
+check if the string or array is not null nor empty (for strings verifies its not all whitespace).
+"""
+directive @notEmpty on FIELD_DEFINITION
+
+"""Trigger the execution of the workflow with the given name"""
+directive @workflow(name: String, inline: WorkflowInput) on FIELD_DEFINITION
+
 """
 Valid on String, Object and Array fields.
 Check if the string or array length matches the range.
 Checks if the object's list of non-null fields matches the range
 """
 directive @length(min: Long, max: Long) on FIELD_DEFINITION
-
-directive @embedded on FIELD_DEFINITION
-
-"""Added by Hypi to objects and fields it generates"""
-directive @generated on SCALAR | OBJECT | FIELD_DEFINITION | UNION | ENUM | INPUT_OBJECT
-
-"""
-check if the string or array is not null nor empty (for strings verifies its not all whitespace).
-"""
-directive @notEmpty on FIELD_DEFINITION
 
 """
 A trigger allows dynamically triggering functions before and after events on any Query or Mutation function
@@ -35,58 +74,20 @@ If applied to an object the before and after triggers are executed before and af
 """
 directive @trigger(config: Trigger!) on OBJECT | FIELD_DEFINITION
 
-"""If present on an object no input type will be generated from that type"""
-directive @noinput on OBJECT
-
-""" directive which allows any GraphQL definition's field to be provided by a Hypi Arc Tan function.
 """
-directive @tan(type: TanType!, name: String, handler: String, inline: String, saveAs: String) on FIELD_DEFINITION
-
+check whether the string is conform to the email address specification
+Matches RFC 5322 regex, probably most relevant https://tools.ietf.org/html/rfc5322#section-3.4.1
+pattern available at https://stackoverflow.com/a/201378/400048
 """
-Indicates that the field cannot be changed after it is initially created
-"""
-directive @immutable on FIELD_DEFINITION
-
-"""check if the date is in the past"""
-directive @past on FIELD_DEFINITION
-
-"""
-Tells Hypi not to generate a table internally for the type this is attached to.
-"""
-directive @notable on OBJECT
-
-"""
-check if the field's value matches the regular expression given a match flag (see https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html  )
-if allMustMatch is true (default) then all regex must pass
-"""
-directive @pattern(regex: [String!]!, allMustMatch: Boolean = true) on FIELD_DEFINITION
-
-"""check if the date is in the future"""
-directive @future on FIELD_DEFINITION
+directive @email on FIELD_DEFINITION
 
 directive @computed(query: String, type: String, limit: Int, postQueryFn: String) on FIELD | FIELD_DEFINITION
-
-"""Trigger the execution of the workflow with the given name"""
-directive @workflow(name: String, inline: WorkflowInput) on FIELD_DEFINITION
-
-"""
-Allows every type and function to be marked with the app and release where it was defined. This helps to identify where dependent types and functions came from in a schema
-"""
-directive @src(releaseId: String) on SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | INTERFACE | UNION | ENUM | INPUT_OBJECT
-
-"""
-When added to an Int or Float field, the math arguments will not be added to that field
-"""
-directive @nomath on OBJECT | FIELD_DEFINITION
 
 """If present on an object, no aggregation is possible on that type"""
 directive @noagg on OBJECT
 
-"""Add to any field which should not have a relay API generated"""
-directive @norelay on FIELD | FIELD_DEFINITION
-
-"""check if the value is not null"""
-directive @notNull on FIELD_DEFINITION
+"""Added by Hypi to objects and fields it generates"""
+directive @generated on SCALAR | OBJECT | FIELD_DEFINITION | UNION | ENUM | INPUT_OBJECT
 
 """
 When applied causes the value of the field it is applied to to be resolved using an HTTP query configured with the given parameters
@@ -105,7 +106,10 @@ are available. Map is the standard Java Map interface containing static util met
 """
 directive @http(method: HttpMethod! = GET, url: String!, headers: String, requestTemplate: String, inline: InlineHttpRequestTemplate, saveAs: String) on FIELD_DEFINITION
 
-directive @indices(sets: [[String]]) on OBJECT | INTERFACE
+"""
+When added to an Int or Float field, the math arguments will not be added to that field
+"""
+directive @nomath on OBJECT | FIELD_DEFINITION
 
 """
 Adding this to any keyword indexed field ensures that no duplicates can be inserted for that field
@@ -113,18 +117,14 @@ Adding this to any keyword indexed field ensures that no duplicates can be inser
 directive @unique on FIELD_DEFINITION
 
 """
-check whether the string is conform to the email address specification
-Matches RFC 5322 regex, probably most relevant https://tools.ietf.org/html/rfc5322#section-3.4.1
-pattern available at https://stackoverflow.com/a/201378/400048
+Allows every type and function to be marked with the app and release where it was defined. This helps to identify where dependent types and functions came from in a schema
 """
-directive @email on FIELD_DEFINITION
+directive @src(releaseId: String) on SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | INTERFACE | UNION | ENUM | INPUT_OBJECT
 
-"""
-Used by core to mark a type as being one of the generated TAgg types. Not for general use!
-"""
-directive @isagg(type: String!) on OBJECT | ENUM
+"""If present on an object no input type will be generated from that type"""
+directive @noinput on OBJECT
 
-directive @computedCount(field: String, distinct: Boolean = false) on FIELD_DEFINITION
+directive @embedded on FIELD_DEFINITION
 
 type AggregatedPolicyAggs {
   decisionStrategy: AggOtherScalar
@@ -1016,6 +1016,19 @@ input CoordinateInput {
   y: Float!
 }
 
+input WorkflowOrderedInputOpt {
+  execAs: String
+  async: Boolean
+  name: String
+  fn: GraphQLRefInputOpt
+  maxExecutionTime: String
+  repeatN: Int
+  hypi: HypiInputOpt
+  evaluateIf: GraphQLRefInputOpt
+  order: Int
+  repeatIf: GraphQLRefInputOpt
+}
+
 """All fields defined by HypiEnv"""
 enum HypiEnvFields {
   hypi
@@ -1028,19 +1041,6 @@ enum HypiEnvFields {
   hypi_trashed
   hypi_createdBy
   hypi_instanceId
-}
-
-input WorkflowOrderedInputOpt {
-  execAs: String
-  async: Boolean
-  name: String
-  fn: GraphQLRefInputOpt
-  maxExecutionTime: String
-  repeatN: Int
-  hypi: HypiInputOpt
-  evaluateIf: GraphQLRefInputOpt
-  order: Int
-  repeatIf: GraphQLRefInputOpt
 }
 
 type OAuthProvider {
@@ -2255,6 +2255,13 @@ input PersonInputOpt {
   preferences: [PairInputOpt]
 }
 
+input RequestTemplateInput {
+  hypi: HypiInput
+  name: String!
+  request: String
+  response: String
+}
+
 """All fields defined by Hypi"""
 enum HypiFields {
   """
@@ -2287,13 +2294,6 @@ enum HypiFields {
 
   """The ID of the app instance which created and owns the object"""
   instanceId
-}
-
-input RequestTemplateInput {
-  hypi: HypiInput
-  name: String!
-  request: String
-  response: String
 }
 
 """All fields defined by BruteForceDetectionOptions"""
@@ -2826,6 +2826,14 @@ input EmailVerificationInputOpt {
   confirmed: Boolean
 }
 
+input EmailTemplateInput {
+  hypi: HypiInput
+  name: String
+  description: String
+  template: String
+  comment: String
+}
+
 """All fields defined by LogMessage"""
 enum LogMessageFields {
   hypi
@@ -2850,14 +2858,6 @@ enum LogMessageFields {
   hypi_trashed
   hypi_createdBy
   hypi_instanceId
-}
-
-input EmailTemplateInput {
-  hypi: HypiInput
-  name: String
-  description: String
-  template: String
-  comment: String
 }
 
 input WebhookResponseInput {
@@ -6632,6 +6632,19 @@ input RoleInput {
   accounts: [AccountInput!]
 }
 
+input TimePolicyInput {
+  hypi: HypiInput
+  from: DateTime
+  to: DateTime
+  clients: [AuthClientInput!]
+  roles: [RoleInput!]
+  groups: [GroupInput!]
+  accounts: [AccountInput!]
+  realms: [RealmLinkInput!]
+  name: String!
+  logic: AuthLogic
+}
+
 """All fields defined by Product"""
 enum ProductFields {
   hypi
@@ -6645,19 +6658,6 @@ enum ProductFields {
   hypi_trashed
   hypi_createdBy
   hypi_instanceId
-}
-
-input TimePolicyInput {
-  hypi: HypiInput
-  from: DateTime
-  to: DateTime
-  clients: [AuthClientInput!]
-  roles: [RoleInput!]
-  groups: [GroupInput!]
-  accounts: [AccountInput!]
-  realms: [RealmLinkInput!]
-  name: String!
-  logic: AuthLogic
 }
 
 input WorkflowInputOpt {
@@ -9455,6 +9455,13 @@ input OAuth2AuthorizedClientInput {
   refreshToken: String
 }
 
+input AccountPolicyInput {
+  hypi: HypiInput
+  accounts: [AccountInput!]
+  name: String!
+  logic: AuthLogic
+}
+
 """All fields defined by Permission"""
 enum PermissionFields {
   hypi
@@ -9502,13 +9509,6 @@ enum PermissionFields {
   hypi_trashed
   hypi_createdBy
   hypi_instanceId
-}
-
-input AccountPolicyInput {
-  hypi: HypiInput
-  accounts: [AccountInput!]
-  name: String!
-  logic: AuthLogic
 }
 
 input WorkflowSessionInputOpt {
