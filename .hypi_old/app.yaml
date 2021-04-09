@@ -1,6 +1,6 @@
-website: eman6.com
-name: eman6
-label: eman6
+website: hypi.co
+name: eman-hypi-cli
+label: Test hypi cli
 releases:
   - name: latest
     schema:
@@ -8,6 +8,6 @@ releases:
     status: PUBLISHED
     notes: latest version
     hypi:
-      id: 01F2VM5MZMPYN8A2B36P344GBW
+      id: 01F2KYH6ZMXNTVPNRWHHNJ8AMD
 hypi:
-  id: 01F2VM5MZK9206TCMD17H1Q78E
+  id: 01F2KYH6Y33ZEB3VK6RZGJV476
