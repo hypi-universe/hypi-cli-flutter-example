@@ -10,6 +10,6 @@ targets:
         options:
           schema_mapping:
             - schema: .hypi/generated-schema.graphql
-              queries_glob: graphql/*.graphql
               output: lib/models/graphql/graphql_api.dart
+              queries_glob: graphql/*.graphql
               naming_scheme: pathedWithFields

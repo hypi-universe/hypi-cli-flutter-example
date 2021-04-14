@@ -1,10 +1,14 @@
 {
   "name": "HypiSchema",
-  "schemaPath": "schema.graphql",
+  "schemaPath": ".hypi/generated-schema.graphql",
   "extensions": {
     "endpoints": {
       "Default": {
         "url": "https://api.hypi.app/graphql",
+        "headers": {
+          "hypi-domain": "ricking.apps.hypi.app",
+          "Authorization" : "Bearer eyJhbGciOiJSUzI1NiJ9.eyJoeXBpLmxvZ2luIjp0cnVlLCJoeXBpLnVzZXJuYW1lIjoiZW1hbi5jc2UyMDA4QGdtYWlsLmNvbSIsImh5cGkuZW1haWwiOiJlbWFuLmNzZTIwMDhAZ21haWwuY29tIiwiYXVkIjoiMDFGMkdaQkpLSDZSM1RDNkVKRFJFNU5IRzQiLCJpYXQiOjE2MTgyMzEwMDQsImV4cCI6MTYyMDgyMzAwNCwic3ViIjoiMDFGMkdaQkpLQUgxSkNDQlZaUzI0TVQ3VlIiLCJuYmYiOjE2MTgyMzEwMDR9.CMsMC09C9dpjAflKbiFGpEcvYbSVvETdnY62lhxBGgBIwrhvckFBfTbLzl-cKWZn8dmVRWzBlcoZM99h0z0dJI2nC9lKRI254tZqicKYT4IUnVWhy9wDq76ZntE63Q5HdQJoPpiEhDyJNmzdU-PQJ5p2iOanA-rxGCGCyT6TKuYnEG24pnezCkj8BcSeXBswW_vWtTqx_zdZKvRQuK_DxIK7adPgcJdqtZnRR-wI39ph2I69Z0zJWLoK5a29M2FNlr5AoMYcx0Di-aF4gKSFkRRjl9TEyCQRNQ5S_0LZLTtwzoIJMV7bBmj0G_Ee-3gJUTuiMuzA1HMM8qHyGPplYA"
+        },
         "introspect": true
       }
     }

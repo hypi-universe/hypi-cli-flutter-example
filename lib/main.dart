@@ -1,43 +1,37 @@
-import 'dart:io';
+import 'dart:convert';
+import 'package:artemis/artemis.dart';
+import 'package:http/http.dart' as http;
+import 'package:codegen/models/graphql/graphql_api.graphql.dart';
 
-import 'package:codegen/client.dart';
-import 'package:codegen/screens/home/home_screen.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
+class AuthenticatedClient extends http.BaseClient {
+  final http.Client _inner = http.Client();
 
-import 'package:codegen/screens/home/bloc.dart';
-import 'package:codegen/repositories/product.dart';
+  Future<http.StreamedResponse> send(http.BaseRequest request) {
+    var myData = {};
+    myData["domain"] = 'ricking.apps.hypi.app';
+    myData["token"] = 'eyJhbGciOiJSUzI1NiJ9.eyJoeXBpLmxvZ2luIjp0cnVlLCJoeXBpLnVzZXJuYW1lIjoiZW1hbi5jc2UyMDA4QGdtYWlsLmNvbSIsImh5cGkuZW1haWwiOiJlbWFuLmNzZTIwMDhAZ21haWwuY29tIiwiYXVkIjoiMDFGMkdaQkpLSDZSM1RDNkVKRFJFNU5IRzQiLCJpYXQiOjE2MTgyMzEwMDQsImV4cCI6MTYyMDgyMzAwNCwic3ViIjoiMDFGMkdaQkpLQUgxSkNDQlZaUzI0TVQ3VlIiLCJuYmYiOjE2MTgyMzEwMDR9.CMsMC09C9dpjAflKbiFGpEcvYbSVvETdnY62lhxBGgBIwrhvckFBfTbLzl-cKWZn8dmVRWzBlcoZM99h0z0dJI2nC9lKRI254tZqicKYT4IUnVWhy9wDq76ZntE63Q5HdQJoPpiEhDyJNmzdU-PQJ5p2iOanA-rxGCGCyT6TKuYnEG24pnezCkj8BcSeXBswW_vWtTqx_zdZKvRQuK_DxIK7adPgcJdqtZnRR-wI39ph2I69Z0zJWLoK5a29M2FNlr5AoMYcx0Di-aF4gKSFkRRjl9TEyCQRNQ5S_0LZLTtwzoIJMV7bBmj0G_Ee-3gJUTuiMuzA1HMM8qHyGPplYA';
 
-GraphQLClient _client = client.value;
-ProductRepository productRepository = ProductRepository(
-  client: _client,
-);
-
-void main() {
-  FlutterError.onError = (FlutterErrorDetails details) {
-    FlutterError.dumpErrorToConsole(details);
-    if (kReleaseMode) exit(1);
-  };
-  runApp(MyApp());
+    request.headers['Authorization'] = 'Bearer ' + myData["token"];
+    request.headers['hypi-domain'] = myData["domain"];
+    return _inner.send(request);
+  }
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Architecture demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: BlocProvider(
-        create: (context) => HomeBloc(
-          productRepository: productRepository,
-        )..add(HomeLoadEvent()),
-        child: HomeScreen(),
-      ),
-    );
+void main() async {
+  final client = ArtemisClient(
+    'https://api.hypi.app/graphql',
+    httpClient: AuthenticatedClient(),
+  );
+
+  final query = ProductsDataQuery(
+    variables: ProductsDataArguments(arcql: '*'),
+  );
+
+  final response = await client.execute(query);
+  client.dispose();
+
+  if (response.hasErrors) {
+    return print('Error: ${response.errors.map((e) => e.message).toList()}');
   }
+  (response?.data?.find?.edges ?? []).map((r) => "Product title is :" + r.node.title).forEach(print);
 }
