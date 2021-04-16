@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/listr": "^0.14.2"
+  }
+}
