@@ -1,6 +1,7 @@
-website: hhh.com
-name: hhd
-label: hhh
+name: tyty
+label: tyty
+hypi:
+  id: 01F3KDPPEKH26TXXADXC0F0Z1M
 releases:
   - name: latest
     schema:
@@ -8,6 +9,4 @@ releases:
     status: PUBLISHED
     notes: latest version
     hypi:
-      id: 01F33TPQCRYV3XKYBEMH1ZAT3Y
-hypi:
-  id: 01F33TPQCN18XK4YKJB1TZKQ0Y
+      id: 01F3KDPPEPVV4X4FDB361VJ2RN

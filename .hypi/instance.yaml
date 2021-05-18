@@ -1,7 +1,7 @@
-domain: ricking.apps.hypi.app
+domain: cat.apps.hypi.app
+hypi:
+  id: 01F3KDPWF7SZ0V5H4D6EAKSRCG
 release:
   name: latest
   hypi:
-    id: 01F33TPQCRYV3XKYBEMH1ZAT3Y
-hypi:
-  id: 01F33TPSPDKYTASG5Q9K3VG9WZ
+    id: 01F3KDPPEPVV4X4FDB361VJ2RN

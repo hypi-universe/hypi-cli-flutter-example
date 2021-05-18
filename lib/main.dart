@@ -34,4 +34,6 @@ void main() async {
     return print('Error: ${response.errors.map((e) => e.message).toList()}');
   }
   (response?.data?.find?.edges ?? []).map((r) => "Product title is :" + r.node.title).forEach(print);
+
+  
 }

@@ -6,8 +6,6 @@ query ProductsData($arcql: String!)
                 ... product
             }
         }
-    }
-}
 fragment product on Product {
     hypi {
         id
