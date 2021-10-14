@@ -5,7 +5,7 @@ import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
-part 'graphql_api.graphql.g.dart';
+part 'graphql.graphql.g.dart';
 
 mixin ProductMixin {
   ProductMixin$Hypi hypi;
