@@ -35,5 +35,4 @@ void main() async {
   }
   (response?.data?.find?.edges ?? []).map((r) => "Product title is :" + r.node.title).forEach(print);
 
-  
 }
