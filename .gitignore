@@ -149,3 +149,5 @@ dist
 
 # TernJS port file
 .tern-port
+
+lib/my_config.dart
